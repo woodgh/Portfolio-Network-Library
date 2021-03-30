@@ -28,6 +28,8 @@
 
 서버는 윈도우/리눅스 기반으로 실행하며, 클라이언트는 윈도우 기반으로 빌드됩니다.
 
+언리얼4 기반 테스트 클라이언트 접속을 지원합니다. [바로가기](https://github.com/woodgh/Portfolio-GameClient)
+
 > 클라이언트 빌드를 위해 wxWidgets 설치가 필요합니다. (vcpkg를 사용할 경우)
 > (https://www.wxwidgets.org/blog/2019/01/wxwidgets-and-vcpkg/)
 > 1. git clone https://github.com/microsoft/vcpkg.git
@@ -43,5 +45,6 @@ DummyClient.exe --clients=클라이언트갯수
 
 ![image](https://user-images.githubusercontent.com/8158795/112939410-63ae6f80-9166-11eb-9380-4ef0666c3ffa.png)
 
-- 윈도우 빌드 서버 테스트 ([바로가기](https://www.youtube.com/watch?v=KnV-PIh-gkU))
-- 리눅스 빌드 서버 테스트 ([바로가기](https://www.youtube.com/watch?v=5rRfWRcgYBA))
+- 윈도우 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=KnV-PIh-gkU))
+- 리눅스 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=5rRfWRcgYBA))
+- 언리얼4 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=eIysjKEEAmg))
