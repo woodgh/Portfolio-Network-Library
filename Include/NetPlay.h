@@ -37,7 +37,12 @@
 
 #endif
 
-#define PLAY_DEFAULT_THREADS (-1)
+#define PLAY_DEFAULT_THREADS	(-1)
+
+#define PLAY_LOG_INFO			0
+#define PLAY_LOG_ERROR			1
+#define PLAY_LOG_WARNING		2
+#define PLAY_LOG_SUCCESS		3
 
 constexpr unsigned long operator"" Bytes(unsigned long long Length)
 {
@@ -64,7 +69,7 @@ constexpr unsigned long operator"" GBytes(unsigned long long Length)
 */
 namespace NetPlay
 {
-	void PLAY_API Logging(const char* Fmt, ...);
+	void PLAY_API Logging(unsigned int LogType, const char* Fmt, ...);
 
 	bool PLAY_API CreatePacket(class Packet** Packet, unsigned long Capacity = 4KBytes);
 	bool PLAY_API CreateServer(class Server** Server, unsigned int NumThreads = PLAY_DEFAULT_THREADS);
