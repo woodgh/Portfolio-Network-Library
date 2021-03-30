@@ -29,6 +29,7 @@ public:
 			, sizer_(new wxBoxSizer(wxHORIZONTAL))
 			, timer_(new wxTimer(this))
 		{
+			// Layout
 			if (sizer_)
 			{
 				sizer_->Add(world_, 0, wxEXPAND | wxALL, 10);
@@ -50,6 +51,7 @@ public:
 	public:
 		bool Initialize(int MaxClients, int MaxThreads)
 		{
+			// 월드 생성 및 클라이언트 생성하기
 			if (world_->Init(MaxClients) == false)
 				return false;
 
@@ -71,12 +73,14 @@ public:
 
 		virtual void OnUpdate(wxCommandEvent& event)
 		{
+			// 월드 업데이트 및 클라이어늩 업데이트
 			if (isActive_ == false)
 				return;
 
 			if (world_)
 				world_->OnUpdate();
 
+			// 리스트 박스의 더미 목록 중 선택된 더미 정보 업데이트하기
 			if (dummySelector_)
 			{
 				int Sel = dummySelector_->GetSelection();
@@ -93,6 +97,7 @@ public:
 
 		virtual bool Destroy() override
 		{
+			// 종료하기
 			isActive_ = false;
 
 			if (timer_)
@@ -115,12 +120,14 @@ public:
 	public:
 		virtual bool OnJoin(class NetPlay::RemoteID* RemoteID)
 		{
+			// 월드 입장
 			if (RemoteID == nullptr)
 				return false;
 
 			if (world_->Enter(RemoteID) == false)
 				return false;
 
+			// 리스트 박스에 접속한 더미 목록 추가하기
 			int Socket = 0;
 
 			if (RemoteID->GetNativeSocket(Socket) == false)
@@ -134,6 +141,7 @@ public:
 
 		virtual bool OnLeave(class NetPlay::RemoteID* RemoteID, int Reason)
 		{
+			// 월드 퇴장
 			if (RemoteID == nullptr)
 				return false;
 
@@ -145,6 +153,7 @@ public:
 
 		virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
 		{
+			// 프로토콜 파싱하기
 			if (RemoteID == nullptr)
 				return false;
 
@@ -191,6 +200,7 @@ public:
 public:
 	virtual bool OnInit() override
 	{
+		// UI 생성하기
 		if (wxApp::OnInit() == false)
 			return false;
 
@@ -205,6 +215,7 @@ public:
 
 	virtual void OnInitCmdLine(wxCmdLineParser& Parser) override
 	{
+		// Cmd Line 명령어 정의하기
 		wxApp::OnInitCmdLine(Parser);
 
 		const static wxCmdLineEntryDesc CmdDesc[] = {
@@ -218,6 +229,7 @@ public:
 
 	virtual bool OnCmdLineParsed(wxCmdLineParser& Parser) override
 	{
+		// Cmd Line 명령어 처리하기
 		if (Parser.Found("clients", (long*)&maxClients_) == false)
 			maxClients_ = kMaxClients;
 

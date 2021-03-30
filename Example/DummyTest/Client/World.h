@@ -16,21 +16,28 @@ public:
 	virtual ~World(void) = default;
 
 public:
+	// 월드 맵 초기화 하기
 	bool Init(int NumClients);
 
+	// 월드 맵 종료하기
 	void Release(void);
 
+	// 프로토콜 파싱하기
 	bool OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData);
 
+	//월드 입장
 	bool Enter(class NetPlay::RemoteID* RemoteID);
 
+	// 월드 퇴장
 	bool Leave(class NetPlay::RemoteID* RemoteID);
 
 	void Select(class NetPlay::RemoteID* RemoteID);
 
 public:
+	// 업데이트
 	void OnUpdate(void);
 
+	// 그리기
 	void OnPaint(wxPaintEvent& Event);
 		
 private:

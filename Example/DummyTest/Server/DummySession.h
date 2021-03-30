@@ -19,17 +19,23 @@ public:
 	~DummySession(void) = default;
 
 public:
+	// 더미 정보 보내기
 	bool ReqDummyInfo(class NetPlay::Packet* Packet);
 
+	// 위치 보내기
 	bool MoveToLocation(class NetPlay::Packet* Packet);
 
+	// 주변 더미들에게 패킷 보내기
 	int SendToNearBy(class NetPlay::Packet* Packet);
 
 public:
+	// 더미 추가하기
 	bool AddDummy(const std::shared_ptr< DummySession >& DummyPtr);
 
+	// 주변에서 멀어진 더미 정보 보내기
 	bool SendFaraway(float Length);
 
+	// 주변에서 가까운 더미 정보 보내기
 	bool SendNearBy(void);
 
 public:
