@@ -22,6 +22,7 @@ public:
 	~Dummy(void) = default;
 
 public:
+	// 패킷 보내기
 	bool Send(class NetPlay::Packet* Packet)
 	{
 		if (Packet == nullptr)
@@ -103,17 +104,17 @@ public:
 protected:
 	class NetPlay::RemoteID* remoteID_ = nullptr;
 
-	int index_ = 0;
+	int index_ = 0;						// 식별 번호
 
-	bool playable_ = false;
+	bool playable_ = false;				// DummyClient이면 false, UE4 GameClient이면 true
 
-	Vector3 location_ = { 0.f, };
+	Vector3 location_ = { 0.f, };		// 위치
 
-	Vector3 rotation_ = { 0.f, };
+	Vector3 rotation_ = { 0.f, };		// 방향
 
-	Vector3 velocity_ = { 0.f, };
+	Vector3 velocity_ = { 0.f, };		// 속도
 
-	Vector3 targetLocation_ = { 0.f, };
+	Vector3 targetLocation_ = { 0.f, };	// 목표 위치
 };
 
 template< class T >

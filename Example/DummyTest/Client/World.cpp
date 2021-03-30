@@ -36,6 +36,7 @@ void World::Release(void)
 
 bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
 {
+	// 프로토콜 파싱하기
 	if (RemoteID == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Unknown RemoteID");
@@ -68,15 +69,15 @@ bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* 
 
 	switch (ProtoType)
 	{
-		case Protocol::ResDummyInfo:
+		case Protocol::ResDummyInfo:	// 더미 정보 받기
 			Result = DummyPtr->ResDummyInfo(Packet);
 			break;
 
-		case Protocol::InSight:
+		case Protocol::InSight:			// 시야에 들어옴
 			Result = DummyPtr->Insight(Packet);
 			break;
 
-		case Protocol::OutOfSight:
+		case Protocol::OutOfSight:		// 시야에 멀어짐
 			Result = DummyPtr->OutOfSight(Packet);
 			break;
 	}
@@ -92,6 +93,7 @@ bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* 
 
 bool World::Enter(class NetPlay::RemoteID* RemoteID)
 {
+	// 월드 입장하기
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	if (RemoteID == nullptr)
@@ -108,6 +110,7 @@ bool World::Enter(class NetPlay::RemoteID* RemoteID)
 		return false;
 	}
 
+	// 입장 후 초기 더미 정보 보내기
 	if (DummyPtr->ReqDummyInfo() == false)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Enter World, Dummy Info, Index: %5d", DummyPtr->GetIndex());
@@ -121,6 +124,7 @@ bool World::Enter(class NetPlay::RemoteID* RemoteID)
 
 bool World::Leave(class NetPlay::RemoteID* RemoteID)
 {
+	// 월드 퇴장하기
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	if (RemoteID == nullptr)
@@ -144,6 +148,7 @@ bool World::Leave(class NetPlay::RemoteID* RemoteID)
 
 void World::Select(class NetPlay::RemoteID* RemoteID)
 {
+	// 리스트박스에 선택된 더미 정보 지정하기
 	if (RemoteID != nullptr)
 		selectDummy_ = RemoteID->UserData< DummyClient >()->SharedPtr();
 	else
@@ -152,6 +157,7 @@ void World::Select(class NetPlay::RemoteID* RemoteID)
 
 void World::OnUpdate(void)
 {
+	// 더미 정보 업데이트
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	for (auto& It : dummyGroup_)
@@ -169,6 +175,7 @@ void World::OnUpdate(void)
 
 		DummyPtr->OnUpdate(width_, height_, reduceScale_);
 
+		// 위치 정보 보내기
 		if (DummyPtr->MoveToLocation() == false)
 			NetPlay::Logging(PLAY_LOG_WARNING, "Replicate to Location, Index: %5d", DummyPtr->GetIndex());
 	}
@@ -176,6 +183,7 @@ void World::OnUpdate(void)
 
 void World::OnPaint(wxPaintEvent& Event)
 {
+	// 월드 맵 그리기
 	wxPaintDC Painter(this);
 	
 	int Hint = 1;
@@ -189,6 +197,7 @@ void World::OnPaint(wxPaintEvent& Event)
 	Painter.SetBrush(*wxTRANSPARENT_BRUSH);
 	Painter.SetPen(wxPen(*wxBLACK, 0));
 
+	// 더미 그리기
 	lock_.lock();
 
 	for (auto& It : dummyGroup_)
@@ -212,6 +221,7 @@ void World::OnPaint(wxPaintEvent& Event)
 
 	lock_.unlock();
 
+	// 선택된 더미는 주변 시야와 시야에 들어온 더미들의 정보 그리기
 	if (selectDummy_)
 	{
 		Painter.SetBrush(*wxRED);

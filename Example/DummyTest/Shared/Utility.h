@@ -115,6 +115,9 @@ inline Vector3 operator / (Vector3 Vector, float Value)
 	};
 }
 
+/**
+* 벡터 정규화
+*/
 inline Vector3 Normalize(Vector3 Vector)
 {
 	if (Vector.Length() <= 0.f)
@@ -127,22 +130,26 @@ inline Vector3 Normalize(Vector3 Vector)
 	};
 }
 
+/**
+* 벡터 전방 이동하기
+*/
 inline Vector3 MoveFowards(Vector3 Location, Vector3 Velocity, float DeltaTime)
 {
 	return Location + Velocity * DeltaTime;
 }
 
-inline Vector3 AddForce(Vector3 Force, float Mass = 100.f)
-{
-	return Force / Mass;
-}
-
+/**
+* 거리 구하기 (typename T)
+*/
 template< typename T >
 inline float Distance(T Src, T Dst)
 {
 	return std::abs(Dst - Src);
 }
 
+/**
+* 거리 구하기 (Vector3)
+*/
 template<>
 inline float Distance(Vector3 Location, Vector3 TargetLocation)
 {
@@ -209,12 +216,18 @@ private:
 	T cur_ = 0;
 };
 
+/**
+* 시작부터 마지막 숫자까지 Range for Base
+*/
 template< typename T >
 RangeIterator< T > Range(T Begin, T End)
 {
 	return { Begin, End };
 }
 
+/**
+* 0부터 마지막 숫자까지 Range for Base
+*/
 template< typename T >
 RangeIterator< T > Range(T End)
 {
@@ -235,6 +248,7 @@ public:
 	~Randomize(void) = default;
 
 public:
+	// Min과 Max 사이의 난수 발생
 	template< typename T >
 	inline typename std::enable_if< std::is_floating_point< T >::value, T >::type operator()(T Min, T Max)
 	{

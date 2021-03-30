@@ -10,9 +10,11 @@ DummySession::DummySession(class NetPlay::RemoteID* RemoteID, float Width, float
 	: Dummy(RemoteID)
 	, isAlive_(true)
 {
+	// 소켓 정보를 Index 값으로 사용
 	if (RemoteID)
 		RemoteID->GetNativeSocket(index_);
 
+	// 초기 위치 할당하기
 	location_ = {
 		Rand(0.f, Width),
 		Rand(0.f, Height),
@@ -22,11 +24,12 @@ DummySession::DummySession(class NetPlay::RemoteID* RemoteID, float Width, float
 
 bool DummySession::ReqDummyInfo(class NetPlay::Packet* Packet)
 {
+	// 클라이언트로 온 더미 정보를 확인하고, 초기 위치 정보 알려주기
 	if (Packet == nullptr)
 		return false;
 
 	*Packet
-	>> &playable_;
+	>> &playable_;	// 플레이어 또는 더미 인지 여부
 
 	if (NetPlay::CreatePacket(&Packet) == false)
 		return false;
@@ -44,6 +47,7 @@ bool DummySession::ReqDummyInfo(class NetPlay::Packet* Packet)
 
 bool DummySession::MoveToLocation(NetPlay::Packet* Packet)
 {
+	// 위치 받아서 저장하기
 	if (Packet == nullptr)
 		return false;
 
@@ -66,6 +70,7 @@ bool DummySession::MoveToLocation(NetPlay::Packet* Packet)
 
 int DummySession::SendToNearBy(class NetPlay::Packet* Packet)
 {
+	// 시야에 들어온 더미들에게 패킷 보내기 
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	int NumFailure = 0;
@@ -84,6 +89,7 @@ int DummySession::SendToNearBy(class NetPlay::Packet* Packet)
 
 bool DummySession::AddDummy(const std::shared_ptr< DummySession >& DummyPtr)
 {
+	// 시야에 들어오면 시야 목록에 더미 추가하기
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	if (DummyPtr == nullptr)
@@ -99,6 +105,10 @@ bool DummySession::AddDummy(const std::shared_ptr< DummySession >& DummyPtr)
 
 bool DummySession::SendFaraway(float Length)
 {
+	/**
+	* 시야에서 멀어지면 시야 목록에서 삭제하고 삭제한 더미 정보 보내기
+	* kPagenation 만큼 가변적으로 보내기
+	*/
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	int NumSendable = 0;
@@ -142,6 +152,10 @@ bool DummySession::SendFaraway(float Length)
 
 bool DummySession::SendNearBy(void)
 {
+	/**
+	* 시야에 들어온 목록을 가지고 보내기
+	* kPagenation 만큼 가변적으로 보내기
+	*/
 	std::lock_guard< std::recursive_mutex > Locker(lock_);
 
 	int NumSendable = 0;
@@ -162,6 +176,7 @@ bool DummySession::SendNearBy(void)
 			NumSendable = 0;
 		}
 
+		// 플레이어일 경우 속도를, 더미일 경우 목표 지점을 전달한다
 		if (It->GetPlayable())
 		{
 			*packet_

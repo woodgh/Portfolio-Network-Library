@@ -29,6 +29,7 @@ public:
 	} NearByDummy;
 
 public:
+	// 기본 속력
 	const float kDefaultSpeed = 600.f;
 
 public:
@@ -39,19 +40,26 @@ public:
 	virtual ~DummyClient(void) = default;
 
 public:
+	// 더미 정보 보내기
 	bool ReqDummyInfo(void);
 
+	// 더미 정보 받기
 	bool ResDummyInfo(class NetPlay::Packet* Packet);
 
+	// 위치 보내기
 	bool MoveToLocation(void);
 
+	// 시야에 들어옴
 	bool Insight(class NetPlay::Packet* Packet);
 
+	// 시야에 멀어짐
 	bool OutOfSight(class NetPlay::Packet* Packet);
 
 public:
+	// 업데이트
 	void OnUpdate(float Width, float Height, float ReduceScale);
 
+	// 그리기
 	void OnDraw(wxPaintDC& Painter, float ReduceScale);
 
 public:

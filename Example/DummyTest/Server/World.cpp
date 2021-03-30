@@ -23,6 +23,7 @@ public:
 	~Sector(void) = default;
 
 public:
+	// 주변 섹터 추가하기
 	void AddSector(std::shared_ptr< Sector > SectorPtr)
 	{
 		std::lock_guard< std::recursive_mutex > Locker(lock_);
@@ -30,6 +31,7 @@ public:
 		sectorGroup_.insert(SectorPtr);
 	}
 
+	// 섹터 파괴하기
 	void Destroy(void)
 	{
 		std::lock_guard< std::recursive_mutex > Locker(lock_);
@@ -37,6 +39,7 @@ public:
 		sectorGroup_.clear();
 	}
 
+	// 섹터 입장
 	bool Enter(std::shared_ptr< DummySession >& DummyPtr)
 	{
 		std::lock_guard< std::recursive_mutex > Locker(lock_);
@@ -47,21 +50,12 @@ public:
 		if (dummyGroup_.find(DummyPtr) != dummyGroup_.end())
 			return false;
 
-		NetPlay::Packet* Packet = nullptr;
-
-		if (NetPlay::CreatePacket(&Packet) == false)
-			return false;
-
-		*Packet
-			<< DummyPtr->GetIndex()
-			<< DummyPtr->GetPlayable()
-			<< DummyPtr->GetLocation();
-
 		dummyGroup_.insert(DummyPtr);
 
 		return true;
 	}
 
+	// 섹터 퇴장
 	bool Leave(std::shared_ptr< DummySession >& DummyPtr)
 	{
 		std::lock_guard< std::recursive_mutex > Locker(lock_);
@@ -78,6 +72,7 @@ public:
 	}
 
 public:
+	// 섹터에 들어온 더미들 중 시야에 드어온 더미를 추가하기
 	void SearchNearBy(std::shared_ptr< DummySession >& DummyPtr, float Length, bool SearchGroup = true)
 	{
 		lock_.lock();
@@ -98,6 +93,7 @@ public:
 		if (SearchGroup == false)
 			return;
 
+		// 인근 섹터에서 찾기
 		for (auto& It : sectorGroup_)
 			It->SearchNearBy(DummyPtr, Length, false);
 	}
@@ -134,6 +130,10 @@ private:
 
 bool World::Init(int MaxRow, int MaxCol, float Distance)
 {
+	/**
+	* 월드 초기화
+	* 요청 크기 기준으로 섹터를 생성 및 주변 섹터 지정하기
+	*/
 	if (MaxRow <= 0 || MaxCol < 0)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Unknown Size: %d/%d", MaxRow, MaxCol);
@@ -150,6 +150,7 @@ bool World::Init(int MaxRow, int MaxCol, float Distance)
 
 	int Index = 0;
 
+	// 섹터에 지역 번호 지정하기
 	for(int Row: Range(MaxRow))
 	{
 		for (int Col : Range(MaxCol))
@@ -160,6 +161,7 @@ bool World::Init(int MaxRow, int MaxCol, float Distance)
 		}
 	}
 
+	// 8방향의 인근 섹터 추가하기
 	for (auto& SectorPtr : sectorGroup_)
 	{
 		// Top
@@ -217,6 +219,7 @@ bool World::Init(int MaxRow, int MaxCol, float Distance)
 
 void World::Release(void)
 {
+	// 모든 내용 정리 및 종료하기
 	for (auto& SectorPtr : sectorGroup_)
 		SectorPtr->Destroy();
 
@@ -230,6 +233,7 @@ void World::Release(void)
 
 bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
 {
+	// 프로토콜 파싱하기
 	if (RemoteID == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Unknown RemoteID");
@@ -262,15 +266,15 @@ bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* 
 
 	switch (ProtoType)
 	{
-		case Protocol::ReqDummyInfo:
+		case Protocol::ReqDummyInfo:	// 더미 정보
 			Result = DummyInfo(DummyPtr, Packet);
 			break;
 
-		case Protocol::MoveToLocation:
+		case Protocol::MoveToLocation:	// 위치 정보
 			Result = MoveToLocation(DummyPtr, Packet);
 			break;
 
-		case Protocol::Chat:
+		case Protocol::Chat:			// 채팅
 			Result = Chat(DummyPtr, Packet);
 			break;
 	}
@@ -286,6 +290,7 @@ bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* 
 
 bool World::Enter(class NetPlay::RemoteID* RemoteID)
 {
+	// 월드 입장하면 더미 생성하기
 	if (RemoteID == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Enter World, Unknown RemoteID");
@@ -300,6 +305,7 @@ bool World::Enter(class NetPlay::RemoteID* RemoteID)
 		return false;
 	}
 
+	// 초기 위치 기준으로 입장할 섹터 찾고 입장하기
 	std::shared_ptr < Sector > SectorPtr = Where(DummyPtr->GetLocation());
 
 	if (SectorPtr == nullptr)
@@ -319,6 +325,7 @@ bool World::Enter(class NetPlay::RemoteID* RemoteID)
 
 bool World::Leave(class NetPlay::RemoteID* RemoteID)
 {
+	// 월드에 퇴장하고 더미 종료하기
 	if (RemoteID == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Leave World, Unknown RemoteID");
@@ -333,6 +340,7 @@ bool World::Leave(class NetPlay::RemoteID* RemoteID)
 		return false;
 	}
 
+	// 퇴장할 섹터 찾고 퇴장하기
 	std::shared_ptr < Sector > SectorPtr = Where(DummyPtr->GetLocation());
 
 	if (SectorPtr == nullptr)
@@ -347,6 +355,7 @@ bool World::Leave(class NetPlay::RemoteID* RemoteID)
 		return false;
 	}
 
+	// 더미 삭제
 	DummyPtr->Dead();
 
 	return true;
@@ -354,6 +363,7 @@ bool World::Leave(class NetPlay::RemoteID* RemoteID)
 
 bool World::DummyInfo(std::shared_ptr< class DummySession >& DummyPtr, class NetPlay::Packet* Packet)
 {
+	// 클라이언트가 접속 후 더미 정보가 전달된다
 	if (DummyPtr == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "DummyInfo, Unknown Dummy");
@@ -377,6 +387,7 @@ bool World::DummyInfo(std::shared_ptr< class DummySession >& DummyPtr, class Net
 
 bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, class NetPlay::Packet* Packet)
 {
+	// 클라이언트로 온 위치 정보 가지고 섹터 처리 및 인근 위치 정보 가져오기
 	if (DummyPtr == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Move to Location, Unknown Dummy");
@@ -389,6 +400,7 @@ bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, clas
 		return false;
 	}
 	
+	// 현재 섹터 확인하기
 	std::shared_ptr< class Sector > CurSectorPtr = Where(DummyPtr->GetLocation());
 
 	if (CurSectorPtr == nullptr)
@@ -397,12 +409,14 @@ bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, clas
 		return false;
 	}
 
+	// 갱신된 위치
 	if (DummyPtr->MoveToLocation(Packet) == false)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Move to Location, Dummy: %5d", DummyPtr->GetIndex());
 		return false;
 	}
 
+	// 갱신된 위치로 부터 새로운 섹터 확인하기
 	std::shared_ptr< class Sector > NewSectorPtr = Where(DummyPtr->GetLocation());
 
 	if (NewSectorPtr == nullptr)
@@ -411,6 +425,7 @@ bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, clas
 		return false;
 	}
 
+	// 이전 섹터와 새로운 섹터가 다를 경우 퇴장, 입장 하기
 	if (CurSectorPtr != NewSectorPtr)
 	{
 		if (CurSectorPtr->Leave(DummyPtr) == false)
@@ -427,29 +442,18 @@ bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, clas
 
 		CurSectorPtr = NewSectorPtr;
 	}
-/*
-	Vector3& Location = DummyPtr->GetLocation();
-	Vector3& Rotation = DummyPtr->GetRotation();
-	Vector3& Velocity = DummyPtr->GetVelocity();
 
-	NetPlay::Logging(PLAY_LOG_INFO, "Dummy(%5d), %+05.5f/%+05.5f/%+05.5f, %+05.5f/%+05.5f/%+05.5f",
-		DummyPtr->GetIndex(),
-		Location.X,
-		Location.Y,
-		Location.Z,
-		Velocity.X,
-		Velocity.Y,
-		Velocity.Z
-		);
-*/
+	// 시야에서 멀어진 더미 정보 알려주기
 	if (DummyPtr->SendFaraway(distance_) == false)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Move to Location, Check Far away, Dummy: %5d", DummyPtr->GetIndex());
 		return false;
 	}
 
+	// 현재 섹터에서 시야에 들어온 더미 정보 정보 가져오기
 	CurSectorPtr->SearchNearBy(DummyPtr, distance_);
 
+	// 시야에 들어온 더미 알려주기
 	if (DummyPtr->SendNearBy() == false)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Move to Location, Check Nearby, Dummy: %5d", DummyPtr->GetIndex());
@@ -461,6 +465,7 @@ bool World::MoveToLocation(std::shared_ptr< class DummySession >& DummyPtr, clas
 
 bool World::Chat(std::shared_ptr< class DummySession >& DummyPtr, class NetPlay::Packet* Packet)
 {
+	// 채팅
 	if (DummyPtr == nullptr)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Relay to Chat, Unknown Dummy");
@@ -473,7 +478,8 @@ bool World::Chat(std::shared_ptr< class DummySession >& DummyPtr, class NetPlay:
 		return false;
 	}
 
-	if (Packet->Rewind(8) == false)
+	// 새로 패킷 구성이 아닌 릴레이를 위해 앞부분으로 이동(길이 + 패킷 타입 = 8Bytes)
+	if (Packet->Rewind(8Bytes) == false)
 	{
 		NetPlay::Logging(PLAY_LOG_ERROR, "Relay to Chat, Rewind Packet, Dummy: %5d", DummyPtr->GetIndex());
 		return false;

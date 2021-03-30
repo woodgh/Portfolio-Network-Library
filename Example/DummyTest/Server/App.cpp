@@ -7,6 +7,9 @@
 #include "DummySession.h"
 #include "World.h"
 
+/**
+* class ServerApp
+*/
 class ServerApp : public NetPlay::IEventHandler
 {
 public:
@@ -15,6 +18,9 @@ public:
 	~ServerApp(void) = default;
 
 public:
+	/**
+	* 서버 시작과 종료하기
+	*/
 	bool LaunchAndDestroy(void)
 	{
 		if (NetPlay::CreateServer(&server_) == false)
@@ -40,6 +46,9 @@ public:
 	}
 
 public:
+	/**
+	* 서버 입장하기
+	*/
 	virtual bool OnJoin(class NetPlay::RemoteID* Session) override
 	{
 		if (Session == nullptr)
@@ -51,6 +60,9 @@ public:
 		return true;
 	}
 
+	/**
+	* 서버 퇴장하기
+	*/
 	virtual bool OnLeave(class NetPlay::RemoteID* Session, int Reason) override
 	{
 		if (Session == nullptr)
@@ -62,6 +74,9 @@ public:
 		return true;
 	}
 
+	/**
+	* 서버로 도착한 패킷 확인하기
+	*/
 	virtual bool OnDelivery(class NetPlay::RemoteID* Session, class NetPlay::Packet* Packet, void* UserData) override
 	{
 		if (Session == nullptr)
@@ -90,6 +105,9 @@ private:
 	std::unique_ptr< World > world_ = std::make_unique< World >();
 };
 
+/**
+* Entry Function
+*/
 int main(int Argc, char** Argv)
 {
 	if (ServerApp().LaunchAndDestroy() == false)
