@@ -28,9 +28,10 @@
 
 서버는 윈도우/리눅스 기반으로 실행하며, 클라이언트는 윈도우 기반으로 빌드됩니다.
 
-언리얼4 기반 테스트 클라이언트 접속을 지원합니다. [바로가기](https://github.com/woodgh/Portfolio-GameClient)
+언리얼4 기반 테스트 클라이언트 접속을 지원합니다. ([바로가기](https://github.com/woodgh/Portfolio-GameClient))
 
 > 클라이언트 빌드를 위해 wxWidgets 설치가 필요합니다. (vcpkg를 사용할 경우)
+> 
 > (https://www.wxwidgets.org/blog/2019/01/wxwidgets-and-vcpkg/)
 > 1. git clone https://github.com/microsoft/vcpkg.git
 > 2. bootstrap-vcpkg.bat
