@@ -1,4 +1,4 @@
-# NetPlay
+# Project-NetPlay
 
 ![image](https://user-images.githubusercontent.com/8158795/110476839-cabba400-8125-11eb-9b0b-4d1c44b15d72.png)
 
