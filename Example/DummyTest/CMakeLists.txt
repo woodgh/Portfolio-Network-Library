@@ -1,0 +1,8 @@
+PROJECT(DummyTest)
+
+ADD_SUBDIRECTORY(Server)
+
+IF(WIN32)
+ADD_SUBDIRECTORY(Client)
+ENDIF()
+
