@@ -2,6 +2,8 @@
 
 멀티 플랫폼에서 사용할 목적으로 제작한 C++ 기반 네트워크 라이브러리입니다. 
 
+### 지원하는 플랫폼
+
 ![Windows](https://img.shields.io/static/v1?label=windows&message=10&color=brightgreen)&nbsp;&nbsp;&nbsp;
 ![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)
 
