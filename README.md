@@ -48,4 +48,6 @@ DummyClient.exe --clients=클라이언트갯수
 
 - 윈도우 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=KnV-PIh-gkU))
 - 리눅스 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=5rRfWRcgYBA))
+
+* Unreal4 클라이언트로 접속 가능하며 이동/채팅을 할 수 있습니다.
 - 언리얼4 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=eIysjKEEAmg))
