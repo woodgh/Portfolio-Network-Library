@@ -33,7 +33,7 @@ public:
 		while (true)
 			server_->Update();
 
-    // 서버 종료하기
+    		// 서버 종료하기
 		if (server_->Shutdown() == false)
 			return false;
 
