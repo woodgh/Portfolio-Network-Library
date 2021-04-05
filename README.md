@@ -82,6 +82,10 @@ int main(int Argc, char** Argv)
 1. 100개 클라이언트 접속
 2. 초당 8바이트 패킷을 20,000,000번 송수신
 
+> CGCII 에코 테스트 툴을 이용한 테스트 화면
+
+![image](https://user-images.githubusercontent.com/8158795/113540024-1d4f8980-961a-11eb-81e6-bd122ef61866.png)
+
 - 윈도우 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=GfNdWTIxvSs))
 - 리눅스 빌드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=lVzvF_djYkU))
 
