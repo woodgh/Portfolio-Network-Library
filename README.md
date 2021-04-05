@@ -6,6 +6,8 @@
 
 ### 사용방법
 ```cpp
+#include <cstdio>
+#include <cstdlib>
 #include <NetPlay.h>
 
 /*
@@ -21,7 +23,7 @@ public:
 public:
 	bool LaunchAndDestroy(void)
 	{
-    // 서버 시작하기
+    		// 서버 시작하기
 		if (NetPlay::CreateServer(&server_, PLAY_DEFAULT_THREADS) == false)
 			return false;
 
@@ -43,7 +45,7 @@ public:
 public:
 	virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData) override
 	{
-    // 도착한 패킷 및 다시 
+    		// 도착한 패킷 및 다시 
 		if (RemoteID->Send(Packet) == false)
 			return false;
 
