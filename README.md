@@ -45,7 +45,7 @@ public:
 public:
 	virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData) final
 	{
-    		// 도착한 패킷 및 다시 
+    		// 도착한 패킷 
 		if (RemoteID->Send(Packet) == false)
 			return false;
 
@@ -82,7 +82,7 @@ int main(int Argc, char** Argv)
 1. 100개 클라이언트 접속
 2. 초당 8바이트 패킷을 20,000,000번 송수신
 
-> CGCII 에코 테스트 툴을 이용한 테스트 화면
+* CGCII 에코 테스트 툴을 이용한 테스트 화면
 
 ![image](https://user-images.githubusercontent.com/8158795/113540024-1d4f8980-961a-11eb-81e6-bd122ef61866.png)
 
