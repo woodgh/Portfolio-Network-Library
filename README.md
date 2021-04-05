@@ -1,8 +1,12 @@
 # Project-NetPlay
 
-![image](https://user-images.githubusercontent.com/8158795/110476839-cabba400-8125-11eb-9b0b-4d1c44b15d72.png)
-
 사용이 쉽고 가벼우며, 멀티플랫폼 환경에서 사용 가능한 C++ 기반 네트워크 라이브러리입니다. 
+
+### 지원하는 플랫폼
+
+![Windows](https://img.shields.io/static/v1?label=windows&message=10&color=brightgreen)&nbsp;&nbsp;&nbsp;
+![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)
+
 
 ### 사용방법
 ```cpp
@@ -67,11 +71,6 @@ int main(int Argc, char** Argv)
 	return EXIT_SUCCESS;
 }
 ```
-
-### 지원하는 플랫폼
-
-![Windows](https://img.shields.io/static/v1?label=windows&message=10&color=brightgreen)&nbsp;&nbsp;&nbsp;
-![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)
 
 # 성능 테스트 - EchoTest
 
