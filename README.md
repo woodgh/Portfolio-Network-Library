@@ -4,6 +4,68 @@
 
 멀티 플랫폼에서 사용할 목적으로 제작한 C++ 기반 네트워크 라이브러리입니다. 
 
+### 사용방법
+```cpp
+#include <NetPlay.h>
+
+/*
+* class EchoTest
+*/
+class EchoTest : public NetPlay::IEventHandler
+{
+public:
+	EchoTest(void) = default;
+
+	~EchoTest(void) = default;
+
+public:
+	bool LaunchAndDestroy(void)
+	{
+    // 서버 시작하기
+		if (NetPlay::CreateServer(&server_, PLAY_DEFAULT_THREADS) == false)
+			return false;
+
+		if (server_->Start("127.0.0.1", 20000, this) == false)
+			return false;
+
+		while (true)
+			server_->Update();
+
+    // 서버 종료하기
+		if (server_->Shutdown() == false)
+			return false;
+
+		server_->Release();
+
+		return true;
+	}
+
+public:
+	virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData) override
+	{
+    // 도착한 패킷 및 다시 
+		if (RemoteID->Send(Packet) == false)
+			return false;
+
+		return true;
+	}
+
+private:
+	NetPlay::Server* server_ = nullptr;
+};
+
+/*
+* entry
+*/
+int main(int Argc, char** Argv)
+{
+	if (EchoTest().LaunchAndDestroy() == false)
+		return EXIT_FAILURE;
+
+	return EXIT_SUCCESS;
+}
+```
+
 ### 지원하는 플랫폼
 
 ![Windows](https://img.shields.io/static/v1?label=windows&message=10&color=brightgreen)&nbsp;&nbsp;&nbsp;
