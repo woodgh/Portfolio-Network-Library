@@ -82,7 +82,7 @@ namespace NetPlay
 	{
 	public:
 		virtual bool OnJoin(class RemoteID* RemoteID) { return true; }
-		virtual bool OnDelivery(class RemoteID* RemoteID, class Packet* Packet, void* UserData) { return true; }
+		virtual bool OnDelivery(class RemoteID* RemoteID, class Packet* Packet) { return true; }
 		virtual bool OnLeave(class RemoteID* RemoteID, int Reason) { return true; }
 	};
 
@@ -96,23 +96,24 @@ namespace NetPlay
 		Packet(const Packet&) = default;
 
 	public:
+		bool PLAY_API Rewind(unsigned long Size);
+
+	public:
 		bool PLAY_API WritableBytes(unsigned long& Bytes);
 		bool PLAY_API Write(char* Value, unsigned long Length);
 
 		template< typename T >
 		bool Write(T Value) { return Write((char*)&Value, sizeof(T)); }
 
+		template< typename T >
+		inline Packet& operator << (T Value) { Write(Value); return *this; }
+
+	public:
 		bool PLAY_API ReadableBytes(unsigned long& Bytes);
 		bool PLAY_API Read(char* Value, unsigned long Length);
 
 		template< typename T >
 		bool Read(T* Value) { return Read((char*)Value, sizeof(T)); }
-
-		bool PLAY_API  Rewind(unsigned long Size);
-
-	public:
-		template< typename T >
-		inline Packet& operator << (T Value) { Write(Value); return *this; }
 
 		template< typename T >
 		inline Packet& operator >> (T* Value) { Read(Value); return *this; }

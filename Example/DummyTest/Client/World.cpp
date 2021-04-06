@@ -34,7 +34,7 @@ void World::Release(void)
 	dummyGroup_.clear();
 }
 
-bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
+bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet)
 {
 	// 프로토콜 파싱하기
 	if (RemoteID == nullptr)

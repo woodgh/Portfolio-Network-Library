@@ -151,7 +151,7 @@ public:
 			return true;
 		}
 
-		virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
+		virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet)
 		{
 			// 프로토콜 파싱하기
 			if (RemoteID == nullptr)
@@ -168,7 +168,7 @@ public:
 			if (Length <= 0)
 				return false;
 
-			if (world_->OnParsing(RemoteID, Packet, UserData) == false)
+			if (world_->OnParsing(RemoteID, Packet) == false)
 				return false;
 
 			return true;

@@ -23,7 +23,7 @@ public:
 	void Release(void);
 
 	// 프로토콜 파싱하기
-	bool OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData);
+	bool OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet);
 
 	//월드 입장
 	bool Enter(class NetPlay::RemoteID* RemoteID);

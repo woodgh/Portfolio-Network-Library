@@ -231,7 +231,7 @@ void World::Release(void)
 	height_ = 0.f;
 }
 
-bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData)
+bool World::OnParsing(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet)
 {
 	// 프로토콜 파싱하기
 	if (RemoteID == nullptr)

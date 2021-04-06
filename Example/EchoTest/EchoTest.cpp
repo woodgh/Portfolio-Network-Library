@@ -36,7 +36,7 @@ public:
 	}
 
 public:
-	virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet, void* UserData) override
+	virtual bool OnDelivery(class NetPlay::RemoteID* RemoteID, class NetPlay::Packet* Packet) override
 	{
 		/**
 		* 받은 패킷 다시 돌려주기

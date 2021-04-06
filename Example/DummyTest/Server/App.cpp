@@ -77,7 +77,7 @@ public:
 	/**
 	* 서버로 도착한 패킷 확인하기
 	*/
-	virtual bool OnDelivery(class NetPlay::RemoteID* Session, class NetPlay::Packet* Packet, void* UserData) override
+	virtual bool OnDelivery(class NetPlay::RemoteID* Session, class NetPlay::Packet* Packet) override
 	{
 		if (Session == nullptr)
 			return false;
@@ -93,7 +93,7 @@ public:
 		if (Length <= 0)
 			return false;
 
-		if (world_->OnParsing(Session, Packet, UserData) == false)
+		if (world_->OnParsing(Session, Packet) == false)
 			return false;
 
 		return true;
