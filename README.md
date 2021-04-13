@@ -5,7 +5,8 @@
 ### 지원하는 플랫폼
 
 ![Windows](https://img.shields.io/static/v1?label=windows&message=10&color=brightgreen)&nbsp;&nbsp;&nbsp;
-![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)
+![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)&nbsp;&nbsp;&nbsp;
+![android](https://img.shields.io/static/v1?label=android&message=19&color=brightgreen)
 
 # 성능 테스트 - EchoTest
 
