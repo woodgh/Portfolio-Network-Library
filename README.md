@@ -9,11 +9,11 @@
 ![android](https://img.shields.io/static/v1?label=android&message=19&color=brightgreen)
 
 ### 개발 환경
-Visual Studio 2019
-GCC 7.5
-NDK
-CMake 3.10
-wxWidgets
+* Visual Studio 2019
+* GCC 7.5
+* NDK
+* CMake 3.10
+* wxWidgets (Only DummyClient)
 
 # 성능 테스트 - EchoTest
 
