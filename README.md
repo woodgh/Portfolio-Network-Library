@@ -8,6 +8,13 @@
 ![Ubuntu](https://img.shields.io/static/v1?label=ubuntu&message=18.04.5_LTS&color=brightgreen)&nbsp;&nbsp;&nbsp;
 ![android](https://img.shields.io/static/v1?label=android&message=19&color=brightgreen)
 
+### 개발 환경
+Visual Studio 2019
+GCC 7.5
+NDK
+CMake 3.10
+wxWidgets
+
 # 성능 테스트 - EchoTest
 
 과거에 게임코디([바로가기](http://1st.gamecodi.com/board/zboard.php?id=GAMECODI_Talkdev&page=3&page_num=40&select_arrange=hit&desc=&sn=off&ss=on&sc=on&keyword=&category=&no=872)) 에서 소개된 CGCII 엔진의 EchoTest 성능을 기준으로 제작 되었습니다.
