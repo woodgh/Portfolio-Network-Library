@@ -61,4 +61,4 @@ DummyClient.exe --clients=클라이언트갯수
 
 #### Unreal4 클라이언트로 접속 가능하며 이동/채팅을 할 수 있습니다.
 - 언리얼4 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=eIysjKEEAmg))
-- 언리얼4  시연 동영상 ([바로가기](https://www.youtube.com/watch?v=N2npZI7Kf7I))
+- 언리얼4 안드로이드 시연 동영상 ([바로가기](https://www.youtube.com/watch?v=N2npZI7Kf7I))
