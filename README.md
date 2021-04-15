@@ -1,4 +1,4 @@
-# Project-NetPlay
+# Portfolio-Network-Library
 
 사용이 쉽고 가벼우며, 멀티플랫폼 환경에서 사용 가능한 C++ 기반 네트워크 라이브러리입니다. 
 
