@@ -11,7 +11,7 @@
 ### 개발 환경
 * Visual Studio 2019
 * GCC 7.5
-* NDK
+* NDK r21e
 * CMake 3.10
 * wxWidgets (Only DummyClient)
 
